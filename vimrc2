@@ -1,0 +1,40 @@
+" File ~/.vimrc
+" ($HOME/_vimrc on Windows)
+" Global settings for all files (but may be overridden in ftplugin).
+set tabstop=2
+set shiftwidth=2
+" To insert space charactes whenever the tab key is pressed
+set expandtab
+"set noexpandtab
+
+set backspace=indent,eol,start
+set nocompatible
+set viminfo='10,\"100,:20,%,n~/.viminfo
+"set ignorecase
+"set autoindent
+
+set ff=unix
+
+" Created ftplugin and it's not working so dumping it here:
+autocmd BufNewFile,BufRead *.py set tabstop=4
+autocmd BufNewFile,BufRead *.py set softtabstop=4
+autocmd BufNewFile,BufRead *.py set shiftwidth=4
+"autocmd BufNewFile,BufRead *.py set textwidth=80
+autocmd BufNewFile,BufRead *.py set smarttab
+autocmd BufNewFile,BufRead *.py set expandtab
+autocmd BufNewFile,BufRead *.py set ft=python
+
+" Go find my .vim files
+syntax on                    " syntax highlighing
+filetype on                  " try to detect filetypes
+filetype plugin indent on    " enable loading indent file for filetyp
+
+" Status line
+set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
+set laststatus=2
+
+"hl search highlights as you search
+set hlsearch
+
+"set shell=c:\\cygwin64\\bin\\zsh.exe shellcmdflag=-c shellxquote=\"
+set shell=C:\\bit9prog\\dev\\cygwin\\bin\\bash.exe shellcmdflag=-c shellxquote=\"
