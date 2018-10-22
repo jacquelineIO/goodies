@@ -1,0 +1,10 @@
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+set backspace=indent,eol,start
+set nocompatible
+set background=dark
+
+"hl search highlights as you search
+set hlsearch
