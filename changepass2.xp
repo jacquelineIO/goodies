@@ -1,0 +1,52 @@
+#!/usr/bin/expect -f
+# wrapper to make passwd(1) be non-interactive
+# username is passed as 1st arg, passwd as 2nd
+#
+# Man page: http://www.tcl.tk/man/expect5.31/expect.1.html
+# 
+# 
+
+# Debug flag
+# The -d flag enables some diagnostic output, which primarily 
+# reports internal activity of commands such as expect and interact. 
+# This flag has the same effect as "exp_internal 1" at the 
+# beginning of an Expect script
+#exp_internal 1 
+
+set username [lindex $argv 0]
+set password [lindex $argv 1]
+set serverid [lindex $argv 2]
+set newpassword [lindex $argv 3]
+
+set pid [ spawn ssh -t $serverid passwd ]
+#set pid [ spawn ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no $serverid ]
+#spawn ssh $serverid
+expect "\\\(current\\\) UNIX password:" { send "$password\r" 
+                                          exp_continue
+}
+
+expect "New password:" { send "$newpassword\r"
+                         expect "Retype new password:" { send  "$newpassword\r" }
+                       }
+expect "New UNIX password:" { send "$newpassword\r"
+                              expect "Retype new UNIX password:" { send "$newpassword\r" }
+                            }
+
+expect "Enter new UNIX password:" { send "$newpassword\r"
+                                    expect "Retype new UNIX password:" { send "$newpassword\r" } 
+                                  }
+expect {
+    "\\\]\\\$" { send "logout\r" }
+    " closed." { }
+}
+expect eof
+
+set status [split [wait $pid]]
+set osStatus [lindex $status 2]
+set procStatus [lindex $status 3]
+puts $osStatus
+puts $procStatus
+if { $osStatus != "0" || $procStatus != "0" } {
+  puts "WARNING: $serverid: Possible Failure to change password for $serverid\n";
+}
+exit $procStatus
