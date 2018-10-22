@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+#
+# http://unix.stackexchange.com/questions/31071/shell-script-for-logging-into-a-ssh-server
+# 
+spawn ssh MyUserName@192.168.20.20
+expect "password:"
+send "Xcv15kl\r"
+expect "Retype new password:"
+send "Xcv15kl\r"
+interact
